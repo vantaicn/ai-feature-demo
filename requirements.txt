@@ -1,0 +1,18 @@
+# Core dependencies for AI features
+google-genai
+python-dotenv
+together
+requests
+Pillow
+google-cloud-speech
+google-cloud-texttospeech
+
+# Model dependencies  
+diffusers
+transformers
+accelerate
+scipy
+safetensors
+torch
+gradio
+huggingface_hub

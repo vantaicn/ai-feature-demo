@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Read Aloud with Real-time STT</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #text-to-read { background: #f8f8f8; padding: 10px; border-radius: 8px; }
+    #recognized { margin-top: 20px; padding: 10px; border: 1px solid #ddd; min-height: 50px; }
+    .highlight { background: yellow; }
+  </style>
+</head>
+<body>
+  <h2>Read the following text aloud:</h2>
+  <div id="text-to-read">
+    “Globalization has accelerated the exchange of ideas, goods, and services across national boundaries…”
+  </div>
+
+  <button id="btn-start">Start Reading</button>
+  <button id="btn-stop" disabled>Stop</button>
+
+  <h3>Your Speech-to-Text (real-time):</h3>
+  <div id="recognized"></div>
+
+  <script>
+    let recognition;
+    const btnStart = document.getElementById('btn-start');
+    const btnStop = document.getElementById('btn-stop');
+    const recognizedDiv = document.getElementById('recognized');
+
+    // kiểm tra trình duyệt có hỗ trợ không
+    if ('webkitSpeechRecognition' in window) {
+      recognition = new webkitSpeechRecognition();
+      recognition.continuous = true; // nghe liên tục
+      recognition.interimResults = true; // cho kết quả tạm thời (real-time)
+      recognition.lang = 'en-US'; // có thể đổi sang 'vi-VN'
+
+      recognition.onresult = (event) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        recognizedDiv.textContent = transcript;
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+      };
+    } else {
+      alert("Trình duyệt của bạn không hỗ trợ Web Speech API");
+    }
+
+    btnStart.onclick = () => {
+      recognition.start();
+      btnStart.disabled = true;
+      btnStop.disabled = false;
+      recognizedDiv.textContent = "";
+    };
+
+    btnStop.onclick = () => {
+      recognition.stop();
+      btnStart.disabled = false;
+      btnStop.disabled = true;
+    };
+  </script>
+</body>
+</html>

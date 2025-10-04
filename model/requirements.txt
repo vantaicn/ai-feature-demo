@@ -1,0 +1,9 @@
+# Tên file: requirements.txt
+
+diffusers
+transformers
+accelerate
+scipy
+safetensors
+torch
+gradio
